@@ -4,14 +4,16 @@ using AbnNotifier.Data.Notifier;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AbnNotifier.Migrations
 {
     [DbContext(typeof(AbnNotifierDbContext))]
-    partial class AbnNotifierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210216085953_RefactorNotificationModel")]
+    partial class RefactorNotificationModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -35,45 +35,6 @@ namespace AbnNotifier.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        public string SendExpiredContracts()
-        {
-            _notifierService.SendExpiredContracts();
-            return "";
-        }
-
-        public string SendOverdueImprests()
-        {
-            _notifierService.SendOverdueImprests();
-            return "";
-        }
-        public string SendDisbursedImprests()
-        {
-            _notifierService.SendDisbursedImprests();
-            return "";
-        }
-        public string SendApprovedLeaves()
-        {
-            _notifierService.SendLeaveStatus("Approved");
-            return "";
-        }
-
-        public string SendDeclinedLeaves()
-        {
-            _notifierService.SendLeaveStatus("Declined");
-            return "";
-        }
-
-        public string SendApprovedImprests()
-        {
-            _notifierService.SendImprestStatus("Approved");
-            return "";
-        }
-        public string SendDeclinedImprests()
-        {
-            _notifierService.SendImprestStatus("Declined");
-            return "";
-        }
-
         public string SendNotification()
         {
             _notifierService.SendNotification();
@@ -85,35 +46,7 @@ namespace AbnNotifier.Controllers
         {
             var con = DbSetting.ConnectionString(Configuration, "Unisol");
 			var service = new AbnNotifierService(_context, con, true);
-
-            if (!_context.Supervisors.Any())
-            {
-                var hr = new Supervisor
-                {
-                    EmpNo = Configuration["HrEmpNo"],
-                    Department = Department.Hr
-                };
-                var fm = new Supervisor
-                {
-                    EmpNo = Configuration["FmEmpNo"],
-                    Department = Department.Finance
-                };
-
-                _context.Supervisors.Add(hr);
-                _context.Supervisors.Add(fm);
-                _context.SaveChanges();
-            }
-
-
-            //service.SendExpiredContracts();
-            //service.SendOverdueImprests();
-            //service.SendDisbursedImprests();
-            //service.SendLeaveStatus("Approved");
-            //service.SendLeaveStatus("Declined");
-            //service.SendImprestStatus("Approved");
-            //service.SendImprestStatus("Declined
-            service.SendNotification();
-
+            //service.SendNotification();
 
             var email = _context.EmailSmsSettings.FirstOrDefault(e => e.Key.Equals(SettingKey.Email));
             if (email == null)
@@ -153,70 +86,6 @@ namespace AbnNotifier.Controllers
 
             return "Hello World";
 
-        }
-
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-
-        {
-            switch (id)
-            {
-                case 1:
-                    _notifierService.SendExpiredContracts();
-                    break;
-                case 2:
-                    _notifierService.SendOverdueImprests();
-                    break;
-                case 3:
-                    _notifierService.SendDisbursedImprests();
-                    break;
-                case 4:
-                    _notifierService.SendLeaveStatus("Approved");
-                    break;
-                case 5:
-                    _notifierService.SendLeaveStatus("Declined");
-                    break;
-                case 6:
-                    _notifierService.SendImprestStatus("Approved");
-                    break;
-                case 7:
-                    _notifierService.SendImprestStatus("Declined");
-                    break;
-            }
-
-            return "value";
-        }
-
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        [HttpPost("[action]")]
-        public string SupervisorAdd([FromBody] AddSupervisorRequest request)
-        {
-            try
-            {
-                var supervisor = new Supervisor
-                {
-                    EmpNo = request.EmpNo,
-                    Department = request.Department
-                };
-                _context.Supervisors.Add(supervisor);
-                _context.SaveChanges();
-                return $"Employee {request.EmpNo} Added to {request.Department} Department";
-            }
-            catch (Exception e)
-            {
-                return $"Employee {request.EmpNo} not Added. Error {e.Message}";
-            }
-        }
-
-        [HttpGet("[action]")]
-        public List<Supervisor> Supervisors()
-        {
-            var supervisors = _context.Supervisors.ToList();
-            return supervisors;
         }
     }
 }

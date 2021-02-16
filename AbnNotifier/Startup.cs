@@ -46,14 +46,8 @@ namespace AbnNotifier
                 var context = serviceScope.ServiceProvider.GetRequiredService<AbnNotifierDbContext>();
                 context.Database.Migrate();
 
-                //var values = new V1Controller(Configuration, context);
-                //RecurringJob.AddOrUpdate(() => values.SendDisbursedImprests(), Cron.MinuteInterval(1));
-                //RecurringJob.AddOrUpdate(() => values.SendOverdueImprests(), Cron.MinuteInterval(2));
-                //RecurringJob.AddOrUpdate(() => values.SendExpiredContracts(), Cron.MinuteInterval(3));
-                //RecurringJob.AddOrUpdate(() => values.SendApprovedLeaves(), Cron.MinuteInterval(4));
-                //RecurringJob.AddOrUpdate(() => values.SendDeclinedLeaves(), Cron.MinuteInterval(5));
-                //RecurringJob.AddOrUpdate(() => values.SendApprovedImprests(), Cron.MinuteInterval(6));
-                //RecurringJob.AddOrUpdate(() => values.SendDeclinedImprests(), Cron.MinuteInterval(7));
+                var values = new V1Controller(Configuration, context);
+                RecurringJob.AddOrUpdate(() => values.SendNotification(), Cron.MinuteInterval(5));
             }
         }
     }
