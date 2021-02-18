@@ -35,6 +35,7 @@ namespace AbnNotifier.Services
 
                 foreach(var recipient in recipientResponse.Data)
                 {
+                    recipient.IsFinalStatus = recipient?.IsFinalStatus ?? "";
                     var message = $"Employee No. ({recipient.EmpNo}) : Doc Type. ({recipient.DocType}) : Approver . {recipient.ApproverTitle} : Status . {recipient.Status} : Decription. {recipient.Description}";
                     var notification = _context.Notification.FirstOrDefault(t => t.DocNo.ToUpper().Equals(recipient.DocNo.ToUpper()));
                     var approvers = new List<Approver>();
@@ -53,16 +54,18 @@ namespace AbnNotifier.Services
                         Title = recipient.ApproverTitle
                     });
 
+                    var isPending = recipient.IsFinalStatus.ToLower().Equals("pending") || string.IsNullOrEmpty(recipient.IsFinalStatus);
                     notification = new Notification
                     {
                         Id = Guid.NewGuid(),
                         DocNo = recipient.DocNo,
-                        Status = recipient.Status,
+                        Status = recipient.IsFinalStatus,
+                        IsFinalStatus = !isPending,
                         Content = message,
                         Department = recipient.Department,
-                        DateCreated = DateTime.UtcNow.AddHours(3),
+                        DateCreated = notification.DateCreated,
                         DateModified = DateTime.UtcNow.AddHours(3),
-                        Empno = recipient.EmpNo,
+                        Empno = recipient.EmpNo, 
                         Approvers = approvers
                     };
 
