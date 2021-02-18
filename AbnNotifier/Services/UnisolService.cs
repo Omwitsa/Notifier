@@ -107,7 +107,8 @@ namespace AbnNotifier.Services
                                     Department = d.Department,
                                     Names = requestor.Names,
                                     ApproverLevel = approverResponse.Data.Level,
-                                    ApproverUserCode = approverResponse.Data.UserCode
+                                    ApproverUserCode = approverResponse.Data.UserCode,
+                                    ApproverNames = approver.Names
                                 });
                             }
                     }

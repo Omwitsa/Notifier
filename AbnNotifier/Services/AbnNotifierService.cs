@@ -70,7 +70,7 @@ namespace AbnNotifier.Services
                     if (!_isSetup)
                     {
                         sent = SendEmail(recipient.Names, recipient.EmpEmail, recipient.DocType, message);
-                        sent = SendEmail(recipient.Names, recipient.ApproverEmail, recipient.DocType, message);
+                        sent = SendEmail(recipient.ApproverNames, recipient.ApproverEmail, recipient.DocType, message);
                     }
 
                     _context.Notification.Add(notification);

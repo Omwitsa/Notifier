@@ -21,5 +21,6 @@ namespace AbnNotifier.Transfer
         public string Names { get; set; }
         public string ApproverUserCode { get; set; }
         public int ApproverLevel { get; set; }
+        public string ApproverNames { get; set; }
     }
 }
